@@ -8,3 +8,5 @@
 ### To exit Python venv
 `deactivate`
 
+### To install all dependencies
+`pip install -r requirements.txt`
