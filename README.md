@@ -2,9 +2,7 @@
 
 ## Usage
 
-:::danger
 ** Always enter Python venv before working on application **
-:::
 
 ### To enter Python venv
 `source ./bin/activate`
