@@ -21,17 +21,30 @@ class HuffKivy(App):
 
         # Dodawanie zdjęcia
         self.window.add_widget(Image(source="indeks.png"))
+
         # Dodawanie labela
-        self.greeting = Label(text="Projekcik")
+        self.greeting = Label(
+                        text="Projekcik",
+                        font_size=18              
+                        )
         self.window.add_widget(self.greeting)
 
         # user input
-        self.user = TextInput(multiline=False)
+        self.user = TextInput(
+            multiline=False,
+            padding_y = (20, 20),
+            size_hint = (1, 0.5)
+            )
         self.window.add_widget(self.user)
 
         # Button
 
-        self.button = Button(text="BUTTONIK")
+        self.button = Button(
+            text="BUTTONIK",
+            size_hint = (1, 0.5),
+            bold = True,
+            background_color = "red"
+            )
         self.button.bind(on_press=self.callback)
         self.window.add_widget(self.button)
 
