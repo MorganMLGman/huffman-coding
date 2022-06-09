@@ -1,7 +1,9 @@
 """ Plik zawierający wszystkie funkcje do kodowania Huffmana,
     NIE ROBIMY TUTAJ NICZEGO Z GUI
 """
-
+import networkx as nx
+import matplotlib.pyplot as plt
+from collections import defaultdict
 
 class NodeTree(object):
     def __init__(self, left=None, right=None):
@@ -21,6 +23,7 @@ class Huffman(object):
     def __init__(self) -> None:
         self.huffmanCode = {}
         self.frequency = {}
+        self.node = None
     
     def __str__(self):
         ret = " Char | Frequency | Huffman code "
@@ -65,10 +68,12 @@ class Huffman(object):
 
             nodes = sorted(nodes, key=lambda x: x[1], reverse=True)
             
+        self.node = node
+        
         huffmanCode = self.code_tree(nodes[0][0])
         
         self.huffmanCode = huffmanCode
         return huffmanCode
     
-    def drawGraph(self):
-        
+    def draw_graph(self):
+        pass
