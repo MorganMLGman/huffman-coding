@@ -80,17 +80,21 @@ class Huffman:
         return d
             
     def encode(self, text) -> str:
-        if len(text) == 1:
+        tmp = set(text)
+        ret = ""
+        if len(tmp) == 1:
             self.frequency = {text: 1}
             self.strCode = "0"
             self.charCode = {text: "0"}
             self.tree = self.Node(1, text)
-            return "0"
+            for _ in range(len(text)):
+                ret += "0"
+            return ret
         
         self.calculate_frequency(text)
         self.create_tree()
         self.calculate_code(self.tree)
-        ret = ""
+        
         for char in text:
             ret += self.charCode[char]
         

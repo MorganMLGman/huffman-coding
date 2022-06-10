@@ -42,14 +42,17 @@ class HuffmanApp(App):
         self.window.add_widget(self.button)
 
         self.graph = Image(
-            source="graph.png",
+            source="",
             size_hint=(1, 1)
         )
         self.window.add_widget(self.graph)
         
-        self.huffCode = Label(
+        self.huffCode = TextInput(
+            multiline= True,
             text="",
-            size_hint = (0.1, 0.1),
+            padding_y= (5, 5),
+            padding_x= (10, 10),
+            size_hint= (1, 0.1)
         )
         self.window.add_widget(self.huffCode)
         
@@ -60,6 +63,14 @@ class HuffmanApp(App):
         huff = Huffman()
         code = huff.encode(self.userText.text)
         huff.draw_graph()
-        self.huffCode.text = code
+        show = ""
+        if len(code) > 8:
+            while len(code) > 1:
+                show += code[0:8] + " "
+                code = code[8:]
+        else:
+            show = code
+            
+        self.huffCode.text = show
         self.graph.source = "graph.png"
         self.graph.reload()
