@@ -57,8 +57,11 @@ class Huffman:
         return root
             
     def calculate_code(self, node: Node, left=True, binString='') -> dict:
-        if not node.character == '\0':
-            return {node.character: binString}
+        if not isinstance(node, str):
+            if not node.character == '\0':
+                return {node.character: binString}
+        else:
+            return {}
         (l, r) = node.left, node.right
         d = dict()
         d.update(self.calculate_code(l, True, binString + '0'))
@@ -77,6 +80,13 @@ class Huffman:
         return d
             
     def encode(self, text) -> str:
+        if len(text) == 1:
+            self.frequency = {text: 1}
+            self.strCode = "0"
+            self.charCode = {text: "0"}
+            self.tree = self.Node(1, text)
+            return "0"
+        
         self.calculate_frequency(text)
         self.create_tree()
         self.calculate_code(self.tree)
@@ -103,7 +113,10 @@ class Huffman:
         if parent.character == '\0':
             labels[parent] = parent.value
         else:
-            labels[parent] = parent.character
+            if parent.character in [' ', '\n', '\t']:
+                labels[parent] = f"{parent.character!a}"
+            else:
+                labels[parent] = parent.character
             
         self.__get_labels(parent.left, labels)
         self.__get_labels(parent.right, labels)
@@ -129,11 +142,15 @@ class Huffman:
             else: 
                 raise ValueError("No tree available")
         self.__add_edge(tree, G)
-        pos = hierarchy_pos(G)
+        
+        try:
+            pos = hierarchy_pos(G)
+        except nx.exception.NetworkXPointlessConcept:
+            pos = {tree: (0.5, -0.1)}
         labels = {}
         self.__get_labels(tree, labels)
         edge_labels = {}
         self.__get_edge_labels(tree, edge_labels)           
         nx.draw(G, pos, labels=labels, alpha=0.6)
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="C1") 
-        plt.savefig("graph.svg")
+        plt.savefig("graph.png", dpi=500)
