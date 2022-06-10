@@ -1,6 +1,9 @@
 """ Plik zawierający wszystkie funkcje do kodowania Huffmana,
     NIE ROBIMY TUTAJ NICZEGO Z GUI
 """
+import networkx as nx
+from EoN import hierarchy_pos
+from matplotlib import pyplot as plt
 
 class Huffman:
     class Node:
@@ -16,9 +19,10 @@ class Huffman:
     def __init__(self) -> None:
         self.frequency = dict()
         self.charCode = dict()
+        self.strCode = ""
         self.tree = None
         
-    def calculate_frequency(self, text):
+    def calculate_frequency(self, text) -> dict:
         for char in text:
             if char in self.frequency:
                 self.frequency[char] += 1
@@ -26,10 +30,8 @@ class Huffman:
                 self.frequency[char] = 1
         return self.frequency
 
-    def create_tree(self):
+    def create_tree(self) -> Node:
         list = sorted(self.frequency.items(), key=lambda x: x[1])
-        
-        print(list)
         nodeC = None
         while len(list) > 1:
             (char1, freq1) = list[0]
@@ -74,9 +76,64 @@ class Huffman:
         self.charCode = d
         return d
             
-    def encode(self, text):
+    def encode(self, text) -> str:
         self.calculate_frequency(text)
         self.create_tree()
-        print(self.calculate_code(self.tree))
-            
+        self.calculate_code(self.tree)
+        ret = ""
+        for char in text:
+            ret += self.charCode[char]
         
+        self.strCode = ret
+        return ret
+    
+    def __add_edge(self, parent: Node, G: nx.DiGraph) -> None:
+        if parent is None:
+            return
+        
+        for child in (parent.left, parent.right):
+            if child:
+                G.add_edge(parent, child)
+                self.__add_edge(child, G)
+    
+    def __get_labels(self, parent: Node, labels) -> None:
+        if parent is None:
+            return
+        
+        if parent.character == '\0':
+            labels[parent] = parent.value
+        else:
+            labels[parent] = parent.character
+            
+        self.__get_labels(parent.left, labels)
+        self.__get_labels(parent.right, labels)
+    
+    def __get_edge_labels(self, parent: Node, edge_labels) -> None:
+        if parent is None:
+            return
+        
+        if parent.left:
+            edge_labels[parent, parent.left] = "0"
+            self.__get_edge_labels(parent.left, edge_labels)
+            
+        if parent.right:
+            edge_labels[parent, parent.right] = "1"
+            self.__get_edge_labels(parent.right, edge_labels)
+                
+    def draw_graph(self, tree: Node = None) -> None:
+        plt.figure(figsize=(15, 10))
+        G = nx.DiGraph()
+        if tree is None:
+            if not self.tree is None:
+                tree = self.tree
+            else: 
+                raise ValueError("No tree available")
+        self.__add_edge(tree, G)
+        pos = hierarchy_pos(G)
+        labels = {}
+        self.__get_labels(tree, labels)
+        edge_labels = {}
+        self.__get_edge_labels(tree, edge_labels)           
+        nx.draw(G, pos, labels=labels, alpha=0.6)
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="C1") 
+        plt.savefig("graph.svg")

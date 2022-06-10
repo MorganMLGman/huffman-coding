@@ -15,6 +15,8 @@ if __name__ == "__main__":
   print(text)
   
   huff = Huffman()
-  huff.encode(text)
+  code = huff.encode(text)
+  print(code)
+  huff.draw_graph()
   
   print(f"Run time: {round(perf_counter() - startTime, 5)} seconds")
