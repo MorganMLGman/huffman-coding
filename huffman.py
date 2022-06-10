@@ -4,6 +4,7 @@
 import networkx as nx
 from EoN import hierarchy_pos
 from matplotlib import pyplot as plt
+from time import perf_counter
 
 class Huffman:
     class Node:
@@ -80,6 +81,7 @@ class Huffman:
         return d
             
     def encode(self, text) -> str:
+        startTime = perf_counter()
         tmp = set(text)
         ret = ""
         if len(tmp) == 1:
@@ -99,6 +101,7 @@ class Huffman:
             ret += self.charCode[char]
         
         self.strCode = ret
+        print(f"Encode time: {round(perf_counter() - startTime, 5)} seconds")
         return ret
     
     def __add_edge(self, parent: Node, G: nx.DiGraph) -> None:
@@ -138,6 +141,7 @@ class Huffman:
             self.__get_edge_labels(parent.right, edge_labels)
                 
     def draw_graph(self, tree: Node = None) -> None:
+        startTime = perf_counter()
         plt.figure(figsize=(15, 10))
         G = nx.DiGraph()
         if tree is None:
@@ -158,3 +162,4 @@ class Huffman:
         nx.draw(G, pos, labels=labels, alpha=0.6)
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="C1") 
         plt.savefig("graph.png", dpi=500)
+        print(f"Graph time: {round(perf_counter() - startTime, 5)} seconds")
