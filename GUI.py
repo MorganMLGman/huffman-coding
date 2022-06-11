@@ -14,35 +14,31 @@ from kivy.core.window import Window
 
 from huffman import Huffman
 
-Config.set('graphics', 'resizable', True)
 
 class HuffmanApp(App):
     def build(self):
         self.window = GridLayout()
         self.window.spacing='10dp'
-        self.window.size_hint=(0.9, 0.7)
+        self.window.size_hint=(0.8, 0.9)
         self.window.pos_hint={"center_x": 0.5, "center_y": 0.5}
         self.window.cols = 1 
         Window.clearcolor=(1,1,1,1)
+        Window.size=(1000,1000)
 
-        self.inputTextLabel = Label(
-            text="Tutaj wpisz tekst:",
-            size_hint = (0.1, 0.1),
-            font_size=18,
-        )
-        self.window.add_widget(self.inputTextLabel)
 
         self.userText = TextInput(
             multiline= True,
             padding_y= (5, 5),
             padding_x= (10, 10),
-            size_hint= (1, 0.5),
+            size_hint= (1, 0.1),
+            font_size = 25,
+            text="Tutaj wpisz tekst do kodowania"
         )
         self.window.add_widget(self.userText)
         
         self.button = Button(
             text= "URUCHOM",
-            size_hint = (0.5, 0.5),
+            size_hint = (0.1, 0.1),
             bold= True,
             background_color = "#f7836a",
             font_size=14,
@@ -57,7 +53,8 @@ class HuffmanApp(App):
             text="",
             padding_y= (5, 5),
             padding_x= (10, 10),
-            size_hint= (1, 0.1)
+            size_hint= (1, 0.1),
+            font_size=18
         )
         self.window.add_widget(self.huffCode)
 
@@ -67,7 +64,6 @@ class HuffmanApp(App):
         )
         self.window.add_widget(self.graph)
     
-        
         
         return self.window
     
