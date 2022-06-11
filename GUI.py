@@ -8,54 +8,62 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
+from kivy.graphics import Color, RoundedRectangle
+from kivy.config import Config
+from kivy.core.window import Window
 
 from huffman import Huffman
+
 
 class HuffmanApp(App):
     def build(self):
         self.window = GridLayout()
-        self.window.size_hint=(0.9, 1)
+        self.window.spacing='10dp'
+        self.window.size_hint=(0.8, 0.9)
         self.window.pos_hint={"center_x": 0.5, "center_y": 0.5}
         self.window.cols = 1 
+        Window.clearcolor=(1,1,1,1)
+        Window.size=(1000,1000)
 
-        self.inputTextLabel = Label(
-            text="Tutaj wpisz tekst:",
-            size_hint = (0.1, 0.1),
-        )
-        self.window.add_widget(self.inputTextLabel)
 
         self.userText = TextInput(
             multiline= True,
             padding_y= (5, 5),
             padding_x= (10, 10),
-            size_hint= (1, 0.1)
+            size_hint= (1, 0.1),
+            font_size = 25,
+            text="Tutaj wpisz tekst do kodowania"
         )
         self.window.add_widget(self.userText)
         
         self.button = Button(
             text= "URUCHOM",
-            size_hint = (0.2, 0.1),
+            size_hint = (0.1, 0.1),
             bold= True,
-            background_color = "red",
+            background_color = "#f7836a",
+            font_size=14,
+            background_normal= '',
         )
+
         self.button.bind(on_press=self.__button_click__)
         self.window.add_widget(self.button)
+
+        self.huffCode = TextInput(
+            multiline= True,
+            text="",
+            padding_y= (5, 5),
+            padding_x= (10, 10),
+            size_hint= (1, 0.1),
+            font_size=18
+        )
+        self.window.add_widget(self.huffCode)
 
         self.graph = Image(
             source="",
             size_hint=(1, 1)
         )
         self.window.add_widget(self.graph)
-        
-        self.huffCode = TextInput(
-            multiline= True,
-            text="",
-            padding_y= (5, 5),
-            padding_x= (10, 10),
-            size_hint= (1, 0.1)
-        )
-        self.window.add_widget(self.huffCode)
-        
+    
         
         return self.window
     
