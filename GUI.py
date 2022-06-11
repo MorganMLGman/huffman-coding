@@ -8,15 +8,22 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
+from kivy.graphics import Color, RoundedRectangle
+from kivy.config import Config
+from kivy.core.window import Window
 
 from huffman import Huffman
+
+Config.set('graphics', 'resizable', True)
 
 class HuffmanApp(App):
     def build(self):
         self.window = GridLayout()
+        self.window.spacing='10dp'
         self.window.size_hint=(0.9, 0.7)
         self.window.pos_hint={"center_x": 0.5, "center_y": 0.5}
         self.window.cols = 1 
+        Window.clearcolor=(1,1,1,1)
 
         self.inputTextLabel = Label(
             text="Tutaj wpisz tekst:",
@@ -37,18 +44,14 @@ class HuffmanApp(App):
             text= "URUCHOM",
             size_hint = (0.5, 0.5),
             bold= True,
-            background_color = "red",
+            background_color = "#f7836a",
             font_size=14,
+            background_normal= '',
         )
+
         self.button.bind(on_press=self.__button_click__)
         self.window.add_widget(self.button)
 
-        self.graph = Image(
-            source="",
-            size_hint=(1, 1)
-        )
-        self.window.add_widget(self.graph)
-        
         self.huffCode = TextInput(
             multiline= True,
             text="",
@@ -57,6 +60,13 @@ class HuffmanApp(App):
             size_hint= (1, 0.1)
         )
         self.window.add_widget(self.huffCode)
+
+        self.graph = Image(
+            source="",
+            size_hint=(1, 1)
+        )
+        self.window.add_widget(self.graph)
+    
         
         
         return self.window
