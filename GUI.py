@@ -14,13 +14,14 @@ from huffman import Huffman
 class HuffmanApp(App):
     def build(self):
         self.window = GridLayout()
-        self.window.size_hint=(0.9, 1)
+        self.window.size_hint=(0.9, 0.7)
         self.window.pos_hint={"center_x": 0.5, "center_y": 0.5}
         self.window.cols = 1 
 
         self.inputTextLabel = Label(
             text="Tutaj wpisz tekst:",
             size_hint = (0.1, 0.1),
+            font_size=18,
         )
         self.window.add_widget(self.inputTextLabel)
 
@@ -28,15 +29,16 @@ class HuffmanApp(App):
             multiline= True,
             padding_y= (5, 5),
             padding_x= (10, 10),
-            size_hint= (1, 0.1)
+            size_hint= (1, 0.5),
         )
         self.window.add_widget(self.userText)
         
         self.button = Button(
             text= "URUCHOM",
-            size_hint = (0.2, 0.1),
+            size_hint = (0.5, 0.5),
             bold= True,
             background_color = "red",
+            font_size=14,
         )
         self.button.bind(on_press=self.__button_click__)
         self.window.add_widget(self.button)
