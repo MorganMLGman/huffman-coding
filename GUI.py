@@ -2,14 +2,13 @@
     NIE ROBIMY TUTAJ NIC ODNOŚNIE KODOWANIA,
     TYLKO IN/OUT NA OKNO, WCZYTANIE ZDJĘCIA itp.
 """
+from math import log2
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
-from kivy.graphics import Color, RoundedRectangle
-from kivy.config import Config
 from kivy.core.window import Window
 
 from huffman import Huffman
@@ -53,7 +52,7 @@ class HuffmanApp(App):
             text="",
             padding_y= (5, 5),
             padding_x= (10, 10),
-            size_hint= (1, 0.1),
+            size_hint= (1, 0.2),
             font_size=18
         )
         self.window.add_widget(self.huffCode)
@@ -78,6 +77,42 @@ class HuffmanApp(App):
                 code = code[8:]
         else:
             show = code
+            
+        show += '\n'
+        
+        sum = 0
+        for key, val in huff.charCode.items():
+            sum += len(val)
+            
+        mean = sum/len(huff.charCode)
+        
+        show += f"Średnia długość słowa: {mean}\n"
+        list = sorted(huff.frequency.items(), key=lambda x: x[1], reverse=True)
+        for key, val in list:
+            show += f"{key} wystapień {val}\n"
+            
+        text_len = len(self.userText.text) * 8
+        code_len = 0
+        
+        code_sum = 0
+        
+        for key, val in huff.charCode.items():
+            freq = huff.frequency[key]
+            code_sum += freq
+            code_len += freq * len(val)
+            
+        show += f"Przed kompresją {text_len} bitów\nPo kompresji {code_len} bitów\n"
+        
+        show += f"Kompresja {round((code_len/text_len) * 100, 2) }%\n"   
+        
+        entropy = 0
+        
+        
+        
+        for key, val in huff.frequency.items():
+            entropy += (val/code_sum) * log2(1/(val / code_sum))     
+            
+        show += f"Entropia {round(entropy, 2)}"
             
         self.huffCode.text = show
         self.graph.source = "graph.png"

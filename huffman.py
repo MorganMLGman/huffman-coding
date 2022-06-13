@@ -161,5 +161,5 @@ class Huffman:
         self.__get_edge_labels(tree, edge_labels)           
         nx.draw(G, pos, labels=labels, alpha=0.6)
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color="C1") 
-        plt.savefig("graph.png", dpi=500)
+        plt.savefig("graph.png", dpi=300)
         print(f"Graph time: {round(perf_counter() - startTime, 5)} seconds")
