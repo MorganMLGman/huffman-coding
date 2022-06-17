@@ -101,9 +101,9 @@ class HuffmanApp(App):
             code_sum += freq
             code_len += freq * len(val)
             
-        show += f"Przed kompresją {text_len} bitów\nPo kompresji {code_len} bitów\n"
+        show += f"Przed kompresją: {text_len} bitów\nPo kompresji: {code_len} bitów\n"
         
-        show += f"Kompresja {round((code_len/text_len) * 100, 2) }%\n"   
+        show += f"Kompresja: {round((code_len/text_len) * 100, 2) }%\n"   
         
         entropy = 0
         
@@ -112,7 +112,7 @@ class HuffmanApp(App):
         for key, val in huff.frequency.items():
             entropy += (val/code_sum) * log2(1/(val / code_sum))     
             
-        show += f"Entropia {round(entropy, 2)}"
+        show += f"Entropia: {round(entropy, 2)}"
             
         self.huffCode.text = show
         self.graph.source = "graph.png"
